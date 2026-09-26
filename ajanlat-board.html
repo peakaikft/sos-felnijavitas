@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pultos nézet — SOS Felnijavítás</title>
+<style>
+  :root{
+    --dark:#14181B;
+    --dark-card:#1D2125;
+    --light:#F5F5F4;
+    --white:#FFFFFF;
+    --text-dark:#14181B;
+    --text-muted:#5B6167;
+    --accent:#E0262B;
+    --accent-dark:#B81E22;
+    --border:#E3E1DD;
+    --radius-lg:18px;
+    --radius-md:14px;
+    --radius-sm:10px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--font);background:var(--light);color:var(--text-dark);font-size:15px;line-height:1.5;padding-bottom:40px;}
+  header{
+    position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;background:var(--dark);color:#fff;
+  }
+  header .logo{font-weight:800;font-size:15px;}
+  header .logo span{color:var(--accent);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    min-height:40px;padding:8px 16px;border-radius:var(--radius-sm);
+    font-family:var(--font);font-size:13.5px;font-weight:700;border:none;cursor:pointer;text-decoration:none;
+  }
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:active{background:var(--accent-dark);}
+  .btn-ghost-dark{background:transparent;color:#fff;border:1.5px solid #3A3F43;}
+  .btn-ghost-light{background:transparent;color:var(--text-dark);border:1.5px solid var(--border);}
+  .btn:disabled{opacity:.55;cursor:default;}
+  .wrap{max-width:720px;margin:0 auto;padding:18px 16px;}
+
+  /* login */
+  .login-card{
+    max-width:360px;margin:60px auto;background:#fff;border-radius:var(--radius-lg);
+    padding:26px 22px;box-shadow:0 2px 18px rgba(0,0,0,.06);
+  }
+  .login-card h2{font-size:19px;margin:0 0 6px;}
+  .login-card p{font-size:13px;color:var(--text-muted);margin:0 0 18px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12.5px;font-weight:700;margin-bottom:5px;}
+  .field input{
+    width:100%;min-height:46px;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+    padding:0 12px;font-family:var(--font);font-size:14px;background:#fff;color:var(--text-dark);
+  }
+  .form-error{font-size:12.5px;color:var(--accent);margin:-6px 0 12px;}
+
+  /* demo banner */
+  .demo-banner{
+    background:#FFF4D6;border:1.5px solid #F0C94D;color:#5C4A05;border-radius:var(--radius-sm);
+    padding:12px 14px;font-size:12.5px;margin-bottom:16px;line-height:1.5;
+  }
+
+  /* filters */
+  .filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;}
+  .filters button{
+    flex-shrink:0;min-height:36px;padding:0 14px;border-radius:999px;border:1.5px solid var(--border);
+    background:#fff;font-family:var(--font);font-size:12.5px;font-weight:700;color:var(--text-dark);cursor:pointer;
+  }
+  .filters button.active{background:var(--dark);border-color:var(--dark);color:#fff;}
+  .filters .count{opacity:.65;font-weight:600;margin-left:3px;}
+
+  /* lead cards */
+  .lead-card{background:#fff;border-radius:var(--radius-md);margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+  .lead-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:14px 16px;cursor:pointer;}
+  .lead-head .who{font-size:14.5px;font-weight:700;}
+  .lead-head .meta{font-size:12px;color:var(--text-muted);margin-top:3px;}
+  .lead-head .sum{font-size:13.5px;font-weight:800;margin-top:6px;}
+  .lead-head .right{text-align:right;flex-shrink:0;}
+  .pill{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;}
+  .pill-src{background:#E7E5E1;color:#3E3B36;margin-bottom:6px;}
+  .badge-uj{background:#E3F2FD;color:#0D47A1;}
+  .badge-kapcsolatfelvetel{background:#EDE7F6;color:#4527A0;}
+  .badge-ajanlat_kuldve{background:#FFF3E0;color:#E65100;}
+  .badge-elfogadva{background:#E8F5E9;color:#1B5E20;}
+  .badge-folyamatban{background:#FFFDE7;color:#8D6E00;}
+  .badge-kesz{background:#DFF5E1;color:#1B5E20;}
+  .badge-elutasitva{background:#FDE9E9;color:#8A1414;}
+  .lead-detail{display:none;padding:0 16px 16px;border-top:1px solid var(--border);}
+  .lead-detail.open{display:block;}
+  .detail-row{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12.5px;color:var(--text-muted);margin:12px 0;}
+  .detail-row strong{color:var(--text-dark);}
+  .edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+  @media(max-width:420px){.edit-grid{grid-template-columns:1fr;}}
+  .edit-grid select,.edit-grid input,.edit-grid textarea{
+    width:100%;min-height:42px;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+    padding:0 10px;font-family:var(--font);font-size:13.5px;color:var(--text-dark);
+  }
+  .edit-grid textarea{min-height:60px;padding:8px 10px;resize:vertical;grid-column:1 / -1;}
+  .save-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .save-msg{font-size:12px;color:#1B5E20;}
+  .fotok-row a{display:inline-block;margin:4px 8px 0 0;font-size:12.5px;color:var(--accent);text-decoration:underline;}
+  .link-line{font-size:12px;color:var(--text-muted);margin-bottom:10px;word-break:break-all;}
+  .empty{text-align:center;color:var(--text-muted);font-size:13.5px;padding:40px 10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">SOS Felnijavítás <span>· pultos nézet</span></div>
+  <button class="btn btn-ghost-dark" id="logout-btn" style="display:none;">Kilépés</button>
+</header>
+
+<div class="wrap">
+
+  <div id="login-view" style="display:none;">
+    <div class="login-card">
+      <h2>Belépés</h2>
+      <p>Csak a stáb tagjai számára — a hozzáférést Barni adja meg a Supabase Auth-ban.</p>
+      <form id="login-form">
+        <div class="field">
+          <label for="login-email">E-mail</label>
+          <input type="email" id="login-email" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="login-pw">Jelszó</label>
+          <input type="password" id="login-pw" required autocomplete="current-password">
+        </div>
+        <div class="form-error" id="login-error" style="display:none;"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;" id="login-submit">Belépés</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="board-view" style="display:none;">
+    <div class="demo-banner" id="demo-banner" style="display:none;">
+      <strong>Demo mód:</strong> nincs élő Supabase-kapcsolat beállítva (lásd supabase-config.js).
+      Ez a nézet a böngésződ helyi tárolójában (localStorage) lévő teszt-leadeket mutatja,
+      bejelentkezés nélkül. Élesben itt Péter és a stáb csak saját belépéssel látja az adatokat.
+    </div>
+
+    <div class="filters" id="filters"></div>
+    <div id="lead-list"></div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
+<script src="db.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var ALLAPOTOK = [
+    { v: "uj", l: "Új" },
+    { v: "kapcsolatfelvetel", l: "Kapcsolatfelvétel" },
+    { v: "ajanlat_kuldve", l: "Ajánlat kiküldve" },
+    { v: "elfogadva", l: "Elfogadva" },
+    { v: "folyamatban", l: "Folyamatban" },
+    { v: "kesz", l: "Kész" },
+    { v: "elutasitva", l: "Elutasítva" }
+  ];
+  var ALLAPOT_LABEL = {};
+  ALLAPOTOK.forEach(function (a) { ALLAPOT_LABEL[a.v] = a.l; });
+
+  var MUNKA_LABEL = {
+    gorgozes: "Görgőzés", spot: "Gyors spotjavítás", komplett: "Komplett felújítás",
+    cnc: "CNC / diamond-cut", egyedi: "Egyedi szín / showroom"
+  };
+
+  var currentFilter = "osszes";
+  var allLeads = [];
+  var openId = null;
+
+  function esc(s) {
+    return (s === null || s === undefined ? "" : String(s)).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function fmtFt(n) { return (n === null || n === undefined) ? "—" : n.toLocaleString("hu-HU") + " Ft"; }
+
+  function fmtWhen(iso) {
+    try {
+      var d = new Date(iso);
+      return d.toLocaleDateString("hu-HU") + " " + d.toLocaleTimeString("hu-HU", { hour: "2-digit", minute: "2-digit" });
+    } catch (e) { return iso; }
+  }
+
+  function baseUrl() { return window.location.href.replace(/[^/]*$/, ""); }
+
+  // ---- LOGIN / AUTH ---------------------------------------------------------
+  function showLogin() {
+    document.getElementById("login-view").style.display = "block";
+    document.getElementById("board-view").style.display = "none";
+    document.getElementById("logout-btn").style.display = "none";
+  }
+
+  function showBoard() {
+    document.getElementById("login-view").style.display = "none";
+    document.getElementById("board-view").style.display = "block";
+    document.getElementById("logout-btn").style.display = Leads.isDemo ? "none" : "inline-flex";
+    document.getElementById("demo-banner").style.display = Leads.isDemo ? "block" : "none";
+    renderFilters();
+    loadLeads();
+  }
+
+  document.getElementById("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = document.getElementById("login-email").value.trim();
+    var pw = document.getElementById("login-pw").value;
+    var errBox = document.getElementById("login-error");
+    var btn = document.getElementById("login-submit");
+    btn.disabled = true; btn.textContent = "Belépés...";
+    Leads.auth.signIn(email, pw).then(function (res) {
+      btn.disabled = false; btn.textContent = "Belépés";
+      if (res.error) {
+        errBox.textContent = "Hibás e-mail vagy jelszó.";
+        errBox.style.display = "block";
+        return;
+      }
+      errBox.style.display = "none";
+      showBoard();
+    });
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", function () {
+    Leads.auth.signOut().then(function () { showLogin(); });
+  });
+
+  // ---- FILTERS ----------------------------------------------------------------
+  function renderFilters() {
+    var box = document.getElementById("filters");
+    var counts = { osszes: allLeads.length };
+    ALLAPOTOK.forEach(function (a) { counts[a.v] = 0; });
+    allLeads.forEach(function (l) { counts[l.allapot] = (counts[l.allapot] || 0) + 1; });
+
+    var items = [{ v: "osszes", l: "Összes" }].concat(ALLAPOTOK);
+    box.innerHTML = items.map(function (a) {
+      return '<button data-filter="' + a.v + '" class="' + (currentFilter === a.v ? "active" : "") + '">' +
+        esc(a.l) + '<span class="count">' + (counts[a.v] || 0) + '</span></button>';
+    }).join("");
+
+    box.querySelectorAll("button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        currentFilter = btn.dataset.filter;
+        renderFilters();
+        renderList();
+      });
+    });
+  }
+
+  // ---- LOAD + RENDER LIST -------------------------------------------------------
+  function loadLeads() {
+    document.getElementById("lead-list").innerHTML = '<div class="empty">Betöltés...</div>';
+    Leads.listAll().then(function (res) {
+      if (res.error) {
+        document.getElementById("lead-list").innerHTML = '<div class="empty">Hiba a betöltéskor: ' + esc(res.error.message || "") + '</div>';
+        return;
+      }
+      allLeads = res.data || [];
+      renderFilters();
+      renderList();
+    });
+  }
+
+  function summaryLine(lead) {
+    if (lead.forras === "kalkulator") {
+      var parts = [lead.darabszam + " db", esc(lead.felni_meret || ""), MUNKA_LABEL[lead.munka_tipus] || lead.munka_tipus];
+      if (lead.gumiszereles) parts.push("gumiszerelés");
+      return parts.filter(Boolean).join(" · ");
+    }
+    var p = [];
+    if (lead.darabszam) p.push(lead.darabszam + " db");
+    if (lead.felni_meret) p.push(esc(lead.felni_meret));
+    p.push("fotó alapján beküldve");
+    return p.join(" · ");
+  }
+
+  function renderList() {
+    var list = allLeads.filter(function (l) { return currentFilter === "osszes" || l.allapot === currentFilter; });
+    var box = document.getElementById("lead-list");
+    if (!list.length) {
+      box.innerHTML = '<div class="empty">Nincs ide tartozó ajánlatkérés.</div>';
+      return;
+    }
+    box.innerHTML = list.map(renderCard).join("");
+
+    list.forEach(function (lead) {
+      var head = document.getElementById("head-" + lead.id);
+      head.addEventListener("click", function () {
+        openId = (openId === lead.id) ? null : lead.id;
+        renderList();
+      });
+      if (openId === lead.id) {
+        wireDetail(lead);
+      }
+    });
+  }
+
+  function renderCard(lead) {
+    var isOpen = openId === lead.id;
+    return (
+      '<div class="lead-card">' +
+        '<div class="lead-head" id="head-' + lead.id + '">' +
+          '<div>' +
+            '<span class="pill pill-src">' + (lead.forras === "kalkulator" ? "Kalkulátor" : "Fotó") + '</span><br>' +
+            '<div class="who">' + esc(lead.nev || "Ismeretlen") + " · " + esc(lead.telefon || "") + '</div>' +
+            '<div class="meta">' + fmtWhen(lead.created_at) + '</div>' +
+            '<div class="sum">' + summaryLine(lead) + '</div>' +
+          '</div>' +
+          '<div class="right">' +
+            '<span class="pill badge-' + lead.allapot + '">' + esc(ALLAPOT_LABEL[lead.allapot] || lead.allapot) + '</span><br>' +
+            '<div class="sum" style="margin-top:8px;">' + esc(lead.vegleges_ar ? fmtFt(lead.vegleges_ar) : (lead.becsult_osszeg_szoveg || "")) + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="lead-detail' + (isOpen ? " open" : "") + '" id="detail-' + lead.id + '">' +
+          (isOpen ? renderDetail(lead) : "") +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderDetail(lead) {
+    var link = baseUrl() + "ugyfel-nezet.html?token=" + lead.share_token;
+    var fotokHtml = "";
+    if (lead.fotok && lead.fotok.length) {
+      fotokHtml = '<div class="fotok-row" id="fotok-' + lead.id + '">Fotók betöltése...</div>';
+    }
+    return (
+      '<div class="detail-row">' +
+        (lead.email ? '<span><strong>E-mail:</strong> ' + esc(lead.email) + '</span>' : '') +
+        (lead.szelep_tipus ? '<span><strong>Szelep:</strong> ' + esc(lead.szelep_tipus) + '</span>' : '') +
+        '<span><strong>Becsült összeg:</strong> ' + esc(lead.becsult_osszeg_szoveg || "—") + '</span>' +
+      '</div>' +
+      '<div class="link-line">Ügyfél saját linkje: <a href="' + link + '" target="_blank" rel="noopener">' + link + '</a></div>' +
+      fotokHtml +
+      '<div class="edit-grid" style="margin-top:12px;">' +
+        '<select id="allapot-' + lead.id + '">' +
+          ALLAPOTOK.map(function (a) {
+            return '<option value="' + a.v + '"' + (a.v === lead.allapot ? " selected" : "") + '>' + esc(a.l) + '</option>';
+          }).join("") +
+        '</select>' +
+        '<input type="number" id="vegleges-' + lead.id + '" placeholder="Végleges ár (Ft)" value="' + (lead.vegleges_ar || "") + '">' +
+        '<textarea id="megjegyzes-' + lead.id + '" placeholder="Belső megjegyzés a kollégáknak...">' + esc(lead.staff_megjegyzes || "") + '</textarea>' +
+      '</div>' +
+      '<div class="save-row">' +
+        '<button class="btn btn-primary" id="save-' + lead.id + '">Mentés</button>' +
+        '<span class="save-msg" id="saved-' + lead.id + '" style="display:none;">Mentve ✓</span>' +
+      '</div>'
+    );
+  }
+
+  function wireDetail(lead) {
+    var saveBtn = document.getElementById("save-" + lead.id);
+    if (saveBtn) {
+      saveBtn.addEventListener("click", function () {
+        var patch = {
+          allapot: document.getElementById("allapot-" + lead.id).value,
+          vegleges_ar: document.getElementById("vegleges-" + lead.id).value ? parseInt(document.getElementById("vegleges-" + lead.id).value, 10) : null,
+          staff_megjegyzes: document.getElementById("megjegyzes-" + lead.id).value
+        };
+        saveBtn.disabled = true;
+        Leads.update(lead.id, patch).then(function (res) {
+          if (res.error) {
+            saveBtn.disabled = false;
+            alert("Mentési hiba: " + (res.error.message || ""));
+            return;
+          }
+          var idx = allLeads.findIndex(function (l) { return l.id === lead.id; });
+          if (idx !== -1) allLeads[idx] = res.data;
+          // Újrarajzoljuk a listát, hogy a fejlécen lévő állapot-jelvény és az
+          // összegzés is azonnal frissüljön, majd megmutatjuk a "Mentve" jelzést.
+          renderFilters();
+          renderList();
+          var msg = document.getElementById("saved-" + lead.id);
+          if (msg) {
+            msg.style.display = "inline";
+            setTimeout(function () { msg.style.display = "none"; }, 2000);
+          }
+        });
+      });
+    }
+
+    if (lead.fotok && lead.fotok.length) {
+      var box = document.getElementById("fotok-" + lead.id);
+      Promise.all(lead.fotok.map(function (path) { return Leads.getFotoUrl(path); })).then(function (results) {
+        var html = lead.fotok.map(function (path, i) {
+          var url = results[i] && results[i].data;
+          if (url) return '<a href="' + url + '" target="_blank" rel="noopener">Fotó ' + (i + 1) + ' megnyitása ↗</a>';
+          return '<span style="font-size:12.5px;color:var(--text-muted);">Fotó ' + (i + 1) + ': ' + esc(path.replace(/^demo:/, "")) + ' (demo módban nincs valódi tárolás)</span>';
+        }).join("<br>");
+        box.innerHTML = html;
+      });
+    }
+  }
+
+  // ---- INDULÁS ------------------------------------------------------------------
+  if (Leads.isDemo) {
+    showBoard();
+  } else {
+    Leads.auth.getSession().then(function (res) {
+      if (res.data && res.data.session) {
+        showBoard();
+      } else {
+        showLogin();
+      }
+    });
+    Leads.auth.onChange(function (session) {
+      if (!session) showLogin();
+    });
+  }
+})();
+</script>
+</body>
+</html>
