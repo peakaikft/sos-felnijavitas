@@ -85,15 +85,25 @@
     color:#FFD9AA;background:#3A2A14;padding:2px 5px;border-radius:5px;
   }
 
-  /* photo placeholder */
+  /* photo placeholder — ideiglenes, szabadon felhasználható stock fotó, valódi fotóra cserélendő */
   .photo-slot{
-    background:#E7E5E1;border:1.5px dashed #B9B6B0;border-radius:var(--radius-md);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:16px;color:#6B675F;
+    position:relative;overflow:hidden;background:#E7E5E1;border-radius:var(--radius-md);
+    display:block;color:#6B675F;
   }
-  .photo-slot .num{font-size:15px;font-weight:800;color:#3E3B36;margin-top:6px;}
-  .photo-slot .meta{font-size:10.5px;color:#8A867E;margin-top:6px;line-height:1.4;}
-  .photo-slot svg{opacity:.55;}
+  .photo-slot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-clean{aspect-ratio:1/1;background:#fff;overflow:hidden;}
+  .photo-clean img{transform:scale(1.2);transform-origin:52% 50.5%;object-fit:cover;}
+  .photo-clean.dlg-img{max-width:300px;margin:0 auto 14px;}
+  .photo-slot .ph-tag{
+    position:absolute;top:8px;left:8px;background:rgba(20,24,27,.72);color:#fff;
+    font-size:9.5px;font-weight:800;letter-spacing:.3px;padding:4px 8px;border-radius:999px;text-transform:uppercase;
+  }
+  .photo-slot .ph-cap{
+    position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;text-align:left;
+    background:linear-gradient(transparent,rgba(20,24,27,.75));
+  }
+  .photo-slot .ph-cap .num{font-size:12px;font-weight:800;color:#fff;margin:0;}
+  .photo-slot .ph-cap .meta{font-size:9.5px;color:#E3E1DD;margin-top:2px;line-height:1.35;}
 
   /* cards row */
   .cards{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
@@ -195,6 +205,36 @@
   }
   .stickybar a,.stickybar button{flex:1;}
 
+  /* desktop */
+  @media(min-width:900px){
+    :root{--gut:max(32px,calc((100vw - 1120px)/2));}
+    section,.hero,.closing{padding-left:var(--gut);padding-right:var(--gut);padding-top:64px;padding-bottom:64px;}
+    header{padding-left:var(--gut);padding-right:var(--gut);}
+    footer{padding-left:var(--gut);padding-right:var(--gut);padding-bottom:48px;}
+    h2{font-size:34px;} .closing h2{font-size:34px;}
+    .sec-head{max-width:720px;}
+    .sec-head p{font-size:17px;}
+    .hero{display:grid;grid-template-columns:1.05fr 1fr;column-gap:56px;align-items:center;}
+    .hero>.eyebrow,.hero>h1,.hero>p,.hero>.btn-row{grid-column:1;}
+    .hero>.photo-slot{grid-column:2;grid-row:1 / span 5;margin-top:0 !important;aspect-ratio:16/10 !important;}
+    .hero h1{font-size:48px;}
+    .hero p{font-size:18px;}
+    .btn{width:auto;}
+    .btn-row{flex-direction:row;flex-wrap:wrap;}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px;}
+    #arak .cards{grid-template-columns:repeat(4,1fr);}
+    .why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+    .before-after{max-width:760px;gap:16px;}
+    .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+    .tl-step{flex-direction:column;padding-bottom:0;}
+    .tl-step:not(:last-child)::before{display:none;}
+    .accordion{max-width:820px;}
+    .stickybar{display:none;}
+    body{padding-bottom:0;}
+    .closing .btn-row{justify-content:center;}
+    dialog{width:min(560px,92vw);}
+  }
+
   /* dialog */
   dialog{
     border:none;border-radius:var(--radius-lg);padding:0;width:min(420px,92vw);
@@ -279,42 +319,23 @@
 <header>
   <div class="logo">SOS FELNIJAVÍTÁS</div>
   <a class="call-icon" href="tel:+36204848958" aria-label="Hívás: 06 20 484 8958">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 3c1 3 2 5 4 7s4 3 7 4l2-2c2 1 4 2 5 3v3c0 1-1 2-2 2C11 20 4 13 4 4c0-1 1-2 2-2h0z" fill="#fff"/></svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
   </a>
 </header>
 
 <!-- 2. HERO -->
 <section class="hero">
   <div class="eyebrow">Segítség azonnal</div>
-  <h1>Gyári hatású felni.<br>Új felni nélkül.</h1>
+  <h1>Gyári megjelenésű felni.<br>Új felni nélkül.</h1>
   <p>Nyitvatartás alatt időpont nélkül is jöhetsz — vagy kérsz egy futárt, mi elhozzuk a felnit háztól-házig.</p>
   <div class="btn-row">
     <button class="btn btn-primary" onclick="document.getElementById('photo-dialog').showModal()">Fotó alapján árajánlat</button>
+    <a class="btn btn-ghost-dark" href="#idopont">Időpontot foglalok</a>
     <a class="btn btn-ghost-dark" href="#megoldasok">Melyik javítás kell nekem?</a>
   </div>
 
-  <div class="photo-slot" style="aspect-ratio:4/3;margin-top:20px;">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#8A867E" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#8A867E" stroke-width="1.5"/></svg>
-    <div class="num">FOTÓ 01</div>
-    <div class="meta">4:3, kb. 1200×900 px — felújított, csillogó felni természetes fényben, semleges háttér előtt</div>
-  </div>
-
-  <div class="stats">
-    <div class="stat">
-      <div class="num">3000+</div>
-      <div class="lbl">felni/év</div>
-      <div class="check-tag">ELLENŐRIZENDŐ</div>
-    </div>
-    <div class="stat">
-      <div class="num">10+ év</div>
-      <div class="lbl">tapasztalat</div>
-      <div class="check-tag">ELLENŐRIZENDŐ</div>
-    </div>
-    <div class="stat">
-      <div class="num">akár 80%</div>
-      <div class="lbl">megtakarítás</div>
-      <div class="check-tag">ELLENŐRIZENDŐ</div>
-    </div>
+  <div class="photo-slot hero-ba" style="aspect-ratio:16/10;margin-top:20px;background:#fff;">
+    <img src="elotte-utana.jpg" alt="Előtte: sérült, rozsdás felni. Utána: ugyanaz a felni újra gyári megjelenéssel" loading="eager">
   </div>
 </section>
 
@@ -326,24 +347,28 @@
     <p>Nem kell technológiát ismerned — mondd el, mit látsz a felnin, a többit intézzük.</p>
   </div>
   <div class="cards">
-    <a class="sit-card" href="#arak-spot">
-      <div><div class="t">Padkás vagy karcos felni</div><div class="d">Felületi sérülés, karcolás</div></div>
+    <a class="sit-card" href="#" onclick="event.preventDefault();document.getElementById('dlg-spot').showModal();">
+      <div><div class="t">Padkasérült vagy karcos felni</div><div class="d">Felületi sérülés, karcolás</div></div>
       <span class="arrow" aria-hidden="true">›</span>
     </a>
-    <a class="sit-card" href="#arak-gorgozes">
-      <div><div class="t">Ütött vagy ovális felni</div><div class="d">Üt, ráz, vagy nem kerek a futás</div></div>
+    <a class="sit-card" href="#" onclick="event.preventDefault();document.getElementById('dlg-gorgozes').showModal();">
+      <div><div class="t">Ütött vagy ovális felni</div><div class="d">Üt, ráz, vagy nem megfelelő a felni futása</div></div>
       <span class="arrow" aria-hidden="true">›</span>
     </a>
-    <a class="sit-card highlight" href="#arak-komplett">
-      <div><div class="t">Sómart vagy lakkhibás felni</div><div class="d">Korrodált felület, foltos, hámló lakk</div></div>
+    <a class="sit-card highlight" href="#" onclick="event.preventDefault();document.getElementById('dlg-komplett').showModal();">
+      <div><div class="t">Sómart, lakkhibás, vagy más színt szeretnél</div><div class="d">Korrodált, foltos, hámló lakk — vagy egyszerűen színcsere</div></div>
       <span class="arrow" aria-hidden="true">›</span>
     </a>
-    <a class="sit-card" href="#arak-cnc">
-      <div><div class="t">Színcsere vagy CNC</div><div class="d">Diamond-cut, esztergált vagy más szín</div></div>
+    <a class="sit-card" href="#" onclick="event.preventDefault();document.getElementById('dlg-cnc').showModal();">
+      <div><div class="t">Kétszínű (CNC / Diamond Cut) felni sérült</div><div class="d">Esztergált, mart felület kopott vagy sérült</div></div>
+      <span class="arrow" aria-hidden="true">›</span>
+    </a>
+    <a class="sit-card" href="#" onclick="event.preventDefault();document.getElementById('dlg-sos').showModal();">
+      <div><div class="t">Gyorsabban lenne rá szükséged?</div><div class="d">Fix vagy SOS, 1 napos vállalási idő</div></div>
       <span class="arrow" aria-hidden="true">›</span>
     </a>
     <a class="sit-card" href="#" onclick="event.preventDefault();document.getElementById('photo-dialog').showModal();">
-      <div><div class="t">Nem tudom, mire van szükségem</div><div class="d">Küldenék pár fotót, rátok bízom</div></div>
+      <div><div class="t">Nem tudom, mire van szükségem</div><div class="d">Küldj pár fotót, vagy írj e-mailt — rátok bízzuk</div></div>
       <span class="arrow" aria-hidden="true">›</span>
     </a>
   </div>
@@ -352,8 +377,8 @@
 <!-- 4. KIEMELT AJÁNLAT -->
 <section style="background:var(--dark);color:#fff;">
   <div class="eyebrow">Legnépszerűbb</div>
-  <h2 style="color:#fff;">Komplett felújítás — gyári hatás, garantáltan</h2>
-  <p style="color:var(--text-on-dark-muted);">Teljes felület-előkészítés és minőségi porfestés — a felni úgy jön ki, mintha most hagyta volna el a gyárat.</p>
+  <h2 style="color:#fff;">Teljes felújítás — gyári technológiával, garantáltan</h2>
+  <p style="color:var(--text-on-dark-muted);">Teljes felület-előkészítés és minőségi porfestés vagy fényezés — a felni úgy jön ki, mintha most hagyta volna el a gyárat.</p>
   <button class="btn btn-primary" style="margin-top:6px;" onclick="document.getElementById('photo-dialog').showModal()">Fotó alapján árajánlat</button>
 </section>
 
@@ -362,83 +387,40 @@
   <div class="sec-head">
     <div class="eyebrow">Árak</div>
     <h2>A jó döntéshez elég egy dolgot tudnod.</h2>
-    <p>Az alábbi árak tájékoztató jellegűek — a pontos ár mindig személyes állapotfelmérés után, a munka megkezdése előtt születik.</p>
-    <button class="btn btn-ghost-light" style="margin-top:4px;" onclick="document.getElementById('kalkulator-dialog').showModal()">Pontos becslés kalkulátorral (kb. 30 mp)</button>
+    <p>Minden ár tájékoztató jellegű — a pontos összeg mindig személyes állapotfelmérés után, a munka megkezdése előtt születik. 4-nél kevesebb felni esetén +5 000 Ft/db felár érvényes.</p>
   </div>
 
   <div class="cards" style="margin-top:18px;">
 
     <div class="price-card" id="arak-gorgozes">
-      <h3>Görgőzés</h3>
+      <h3>Görgőzés / mechanikai javítás</h3>
       <div class="price">4 000 Ft-tól</div>
-      <ul>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>13–15" alufelni, +szerelés</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>22–26"-ig 14 000 Ft-tól</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mechanikai javítás (hegesztés is)</li>
-      </ul>
-      <div class="photo-slot" style="aspect-ratio:4/3;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#8A867E" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#8A867E" stroke-width="1.5"/></svg>
-        <div class="num">FOTÓ 02</div>
-        <div class="meta">4:3, kb. 800×600 px — görgőzés munka közben vagy elkészült, kerek futás</div>
-      </div>
+      <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Ütött, ovális felni — megvárható, kb. 1 óra alatt kész.</p>
+      <button type="button" class="btn btn-ghost-dark" style="margin-top:2px;" onclick="document.getElementById('dlg-gorgozes').showModal()">Részletes árlista →</button>
     </div>
 
     <div class="price-card" id="arak-spot">
       <h3>Gyors spotjavítás</h3>
       <div class="price">12 000 Ft/db</div>
-      <ul>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Megvárható, időponthoz kötött</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Nem gyári minőség — gyors megoldás</li>
-      </ul>
-      <div class="photo-slot" style="aspect-ratio:4/3;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#8A867E" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#8A867E" stroke-width="1.5"/></svg>
-        <div class="num">FOTÓ 03</div>
-        <div class="meta">4:3, kb. 800×600 px — spotjavítás közelről, a javított felület</div>
-      </div>
+      <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Padkasérült, karcos felület — megvárható, nem gyári minőség.</p>
+      <button type="button" class="btn btn-ghost-dark" style="margin-top:2px;" onclick="document.getElementById('dlg-spot').showModal()">Részletes árlista →</button>
     </div>
 
     <div class="price-card highlight" id="arak-komplett">
       <div class="badge">Legnépszerűbb</div>
-      <h3>Komplett felújítás</h3>
+      <h3>Teljes felújítás</h3>
       <div class="price">20 000 Ft-tól/db</div>
-      <ul>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Minőségi porfestés, méret szerint</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Teljes felület-előkészítés</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>3–10 munkanap</li>
-      </ul>
-      <div class="photo-slot" style="aspect-ratio:4/3;background:#2A2E32;border-color:#3E4448;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#9AA0A3" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#9AA0A3" stroke-width="1.5"/></svg>
-        <div class="num" style="color:#fff;">FOTÓ 04</div>
-        <div class="meta" style="color:#A3A8AC;">4:3, kb. 800×600 px — kész, porfestett felni, gyári hatás</div>
-      </div>
+      <div style="font-size:12px;color:var(--text-on-dark-muted);margin-top:-6px;">porfestéssel · fényezéssel 40 000 Ft-tól/db</div>
+      <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Gyári technológiával — tetszőleges színben is, fényezéssel.</p>
+      <button type="button" class="btn btn-ghost-dark" style="margin-top:2px;background:rgba(255,255,255,.08);" onclick="document.getElementById('dlg-komplett').showModal()">Részletes árlista →</button>
     </div>
 
     <div class="price-card" id="arak-cnc">
-      <h3>CNC / diamond-cut</h3>
+      <h3>CNC / Diamond Cut</h3>
       <div class="price">15 000 Ft-tól</div>
-      <ul>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Lakkfestés után, 20" felett 20 000 Ft</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Színezett lakk: +5 000 Ft/db</li>
-      </ul>
-      <div class="photo-slot" style="aspect-ratio:4/3;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#8A867E" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#8A867E" stroke-width="1.5"/></svg>
-        <div class="num">FOTÓ 05</div>
-        <div class="meta">4:3, kb. 800×600 px — CNC-mart, kétszínű felni közelről</div>
-      </div>
-    </div>
-
-    <div class="price-card" id="arak-showroom">
-      <h3>Showroom kivitel</h3>
-      <div class="price">Egyedi ár</div>
-      <ul>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Előre jelezve, állapotfelmérés után</li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#E0262B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Egyedi szín egyedi áron</li>
-      </ul>
-      <div class="photo-slot" style="aspect-ratio:4/3;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#8A867E" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#8A867E" stroke-width="1.5"/></svg>
-        <div class="num">FOTÓ 06</div>
-        <div class="meta">4:3, kb. 800×600 px — egyedi, showroom-minőségű felni</div>
-      </div>
+      <div style="font-size:12px;color:var(--text-on-dark-muted);margin-top:-6px;">+ lakkozás 15 000 Ft-tól/db</div>
+      <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Csak a sérült CNC-mart felület javítása — nem kell teljesen felújítani.</p>
+      <button type="button" class="btn btn-ghost-dark" style="margin-top:2px;" onclick="document.getElementById('dlg-cnc').showModal()">Részletes árlista →</button>
     </div>
 
   </div>
@@ -458,7 +440,7 @@
     </div>
     <div class="why-item highlight">
       <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
-      <div><h3>Nem toldozunk</h3><p>Ipari minőségű, teljes helyreállítás — nem gyors, felszínes takarás.</p></div>
+      <div><h3>Nem toldozunk</h3><p>Gyári technológiával végzett, teljes helyreállítás — nem gyors, felszínes takarás.</p></div>
     </div>
     <div class="why-item">
       <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -472,14 +454,10 @@
 
   <div class="before-after">
     <div class="photo-slot">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#8A867E" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#8A867E" stroke-width="1.5"/></svg>
-      <div class="num">FOTÓ 07</div>
-      <div class="meta">4:3, kb. 800×600 px — sérült felni ELŐTTE, természetes fényben</div>
+      <img src="foto-06.jpg" alt="Lemezfelni a javítás előtt, rozsdásan" loading="lazy">
     </div>
     <div class="photo-slot">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 8a2 2 0 012-2h1.5l1-1.5h7l1 1.5H18a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2V8z" stroke="#8A867E" stroke-width="1.5"/><circle cx="12" cy="13" r="3.2" stroke="#8A867E" stroke-width="1.5"/></svg>
-      <div class="num">FOTÓ 08</div>
-      <div class="meta">4:3, kb. 800×600 px — ugyanaz a felni UTÁNA, azonos szögből</div>
+      <img src="foto-07.jpg" alt="Ugyanaz a lemezfelni a javítás után" loading="lazy">
     </div>
   </div>
 
@@ -488,13 +466,13 @@
       <summary class="acc-trigger">Miért javítás, és miért nem inkább csere vagy fényezés?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
       <div class="acc-panel">
         <p style="margin-bottom:10px;">Egy gyári felni szerkezetileg értékes darab. Ha a sérülés szakszerűen helyrehozható,
-        a professzionális helyreállítás sok esetben ésszerűbb döntés, mint egy ismeretlen előéletű bontott felni
+        a professzionális helyreállítás sok esetben ésszerűbb döntés, mint egy ismeretlen előéletű használt felni
         beszerzése, vagy egy vadonatúj felni megvásárlása.</p>
         <p style="margin-bottom:10px;"><strong>Nem toldozunk.</strong> A teljes felületet egységesen készítjük elő és
         kezeljük utána — nem csak a sérült foltot fedjük le. Ennek eredménye, hogy a szín és a felületi minőség
         a felni egész felületén egyforma marad, nem csak a javított résznél.</p>
         <p style="margin:0;">A pontosan szükséges munkát, a vállalási időt és a végleges árat mindig jóváhagyod,
-        mielőtt hozzákezdünk — ahogy azt a "Így működik" folyamatnál fentebb is látod.</p>
+        mielőtt hozzákezdünk — ahogy azt az "Így működik" folyamatnál fentebb is látod.</p>
       </div>
     </details>
   </div>
@@ -526,71 +504,6 @@
   </div>
 </section>
 
-<!-- 8. RÉSZLETES ÁRLISTA -->
-<section style="background:var(--light);">
-  <div class="sec-head">
-    <div class="eyebrow">Részletes árlista</div>
-    <h2>Azoknak, akik számokkal szeretnek.</h2>
-  </div>
-  <div class="accordion">
-    <details class="acc-item">
-      <summary class="acc-trigger">Görgőzés méret szerint<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">
-        <table>
-          <tr><td>Alufelni, 13–15"</td><td>4 000 Ft-tól/db + szerelés</td></tr>
-          <tr><td>Méret szerint, 22–26"-ig</td><td>14 000 Ft-tól/db</td></tr>
-        </table>
-      </div>
-    </details>
-    <details class="acc-item">
-      <summary class="acc-trigger">Porfestés / fényezés<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">
-        <table>
-          <tr><td>Alap porfestés</td><td>17 500–22 500 Ft/db</td></tr>
-          <tr><td>Minőségi porfestés, méret szerint</td><td>20 000–40 000 Ft/db</td></tr>
-          <tr><td>Egyszínű fényezés</td><td>40 000–80 000 Ft/db</td></tr>
-        </table>
-        <p style="margin-top:12px;font-size:12.5px;">
-          <strong>Alap porfestés</strong>: egyrétegű, gyors megoldás — jó választás pl. téli garnitúrához vagy
-          esztétikai frissítéshez, ha nem elvárás a gyári szintű tartósság.<br><br>
-          <strong>Minőségi porfestés</strong>: külön alapozó réteg + porfesték + záró lakkréteg — ez adja a
-          gyári hatású, tartós, egyenletes felületet, RAL-színpaletta szerint.<br><br>
-          <strong>Egyszínű fényezés</strong>: akkor javasolt, ha a pontos gyári színkód vagy egy nem RAL-szín
-          számít (pl. metálfény). Várható élettartam rendeltetésszerű használat mellett több év
-          <span class="check-tag" style="margin-left:2px;">ELLENŐRIZENDŐ</span>.
-        </p>
-      </div>
-    </details>
-    <details class="acc-item">
-      <summary class="acc-trigger">CNC, lakkozás<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">
-        <table>
-          <tr><td>CNC vagy lakkfestés után</td><td>15 000 Ft/db</td></tr>
-          <tr><td>20" felett</td><td>20 000 Ft/db</td></tr>
-          <tr><td>Színezett lakk felár</td><td>+5 000 Ft/db</td></tr>
-        </table>
-      </div>
-    </details>
-    <details class="acc-item">
-      <summary class="acc-trigger">Vegymaratás<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">
-        <table>
-          <tr><td>Vegymaratás</td><td>ár állapotfelmérés után [ELLENŐRIZENDŐ]</td></tr>
-        </table>
-      </div>
-    </details>
-    <details class="acc-item">
-      <summary class="acc-trigger">Felárak<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">
-        <table>
-          <tr><td>4-nél kevesebb felni esetén</td><td>+5 000 Ft/db</td></tr>
-          <tr><td>Egyedi szín</td><td>egyedi áron</td></tr>
-        </table>
-      </div>
-    </details>
-  </div>
-</section>
-
 <!-- 9. GYIK -->
 <section id="gyik">
   <div class="sec-head">
@@ -604,7 +517,7 @@
     </details>
     <details class="acc-item">
       <summary class="acc-trigger">Mennyi idő alatt készül el?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">Teljes felújítás kb. 3–10 munkanap, egy részmunka (pl. görgőzés) akár 1 munkanap alatt is elkészülhet.</div>
+      <div class="acc-panel">A teljes felújítás átlagosan 5–15 munkanapot vesz igénybe (tájékoztató jellegű), a megvárható részmunkák (pl. görgőzés, spotjavítás) akár ugyanaznap elkészülnek. Sürgősebb esetben fix 5 munkanapos (+30% felár) vagy SOS, 1 munkanapos (+50% felár, előzetes egyeztetéssel) vállalást is kérhetsz.</div>
     </details>
     <details class="acc-item">
       <summary class="acc-trigger">Van házhozszállítás / futár?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
@@ -620,7 +533,7 @@
     </details>
     <details class="acc-item">
       <summary class="acc-trigger">Meddig tárolják az átvett felnit?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">7 napig díjmentesen, utána tárolási díj érvényes (az összeg egyeztetés alatt [ELLENŐRIZENDŐ]).</div>
+      <div class="acc-panel">A javításra átvett abroncsokat 7 naptári napig tároljuk, utána értékesítjük, ezért a kész kereket érdemes időben elvinni. Hosszabb tárolásra a gumihotel szolgáltatás elérhető: 3 000 Ft-tól kerekenként (gumiabroncs 3 000 Ft, szerelt kerék 3 500 Ft).</div>
     </details>
     <details class="acc-item">
       <summary class="acc-trigger">Kapok végleges árat csak a fotó alapján?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
@@ -637,13 +550,40 @@
   </div>
 </section>
 
+<!-- 9b. IDŐPONTFOGLALÁS (a meglévő foglalórendszerhez) -->
+<section id="idopont">
+  <div class="sec-head">
+    <div class="eyebrow">Időpontfoglalás</div>
+    <h2>Foglalj időpontot, vagy jöhetsz anélkül is.</h2>
+    <p>Az időpontot a Centrum Gumi foglalórendszerében foglalhatod le, a szolgáltatás már ki lesz választva. A felni átvizsgálása és az ár mindig személyes állapotfelmérés után derül ki.</p>
+  </div>
+  <div class="cards" style="margin-top:18px;">
+    <div class="price-card">
+      <h3>Görgőzés</h3>
+      <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Ütött, ovális felni — kb. 60 perc, megvárható.</p>
+      <a class="btn btn-primary" style="margin-top:2px;" href="https://idopont.centrumgumi.hu/foglalas.html?szolgaltatas=gorgozes" target="_blank" rel="noopener">Időpont görgőzésre</a>
+    </div>
+    <div class="price-card">
+      <h3>Görgőzés + szezonális gumicsere</h3>
+      <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Ha a gumicserével együtt javíttatnád a felnit — kb. 60 perc.</p>
+      <a class="btn btn-primary" style="margin-top:2px;" href="https://idopont.centrumgumi.hu/foglalas.html?szolgaltatas=gorgozes_gumicsere" target="_blank" rel="noopener">Időpont görgőzésre és gumicserére</a>
+    </div>
+    <div class="price-card">
+      <h3>Gumicsere + felni állapotfelmérés</h3>
+      <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Gumicsere közben megnézzük a felnit — kb. 30 perc.</p>
+      <a class="btn btn-primary" style="margin-top:2px;" href="https://idopont.centrumgumi.hu/foglalas.html?szolgaltatas=gumicsere_felni" target="_blank" rel="noopener">Időpont állapotfelmérésre</a>
+    </div>
+  </div>
+  <p style="font-size:12.5px;margin-top:14px;">Nem tudod, melyik kell? Küldj fotót, és megmondjuk — <a href="#" onclick="event.preventDefault();document.getElementById('photo-dialog').showModal();">Fotó alapján árajánlat</a>.</p>
+</section>
+
 <!-- 10. ZÁRÓ CTA -->
 <section class="closing">
   <h2>Mutasd meg a felnit.</h2>
   <p>Megmondjuk, merre érdemes indulni.</p>
   <div class="btn-row">
     <button class="btn btn-primary" onclick="document.getElementById('photo-dialog').showModal()">Fotó küldése</button>
-    <button class="btn btn-ghost-dark" onclick="document.getElementById('kalkulator-dialog').showModal()">Gyors becslés kalkulátorral</button>
+    <a class="btn btn-ghost-dark" href="#idopont">Időpontfoglalás</a>
   </div>
   <p style="margin-top:16px;font-size:12.5px;color:#FFDCDC;">
     Vagy ha inkább hívnál: <a href="tel:+36204848958" style="color:#fff;text-decoration:underline;">06 20 484 8958</a>
@@ -679,14 +619,13 @@
   </div>
 
   <div class="foot-block">
-    <!-- ELLENŐRIZENDŐ: nincs még élő adatvédelmi tájékoztató oldal, a link egyelőre helyőrző -->
-    <a href="#">Adatvédelem</a>
+    <a href="adatkezeles.html">Adatvédelem</a>
   </div>
 </footer>
 
 <!-- 12. STICKY ALSÓ SÁV -->
 <div class="stickybar">
-  <button class="btn btn-ghost-light" onclick="document.getElementById('kalkulator-dialog').showModal()">Kalkulátor</button>
+  <a class="btn btn-ghost-light" href="#idopont">Időpont</a>
   <button class="btn btn-primary" onclick="document.getElementById('photo-dialog').showModal()">Fotó küldése</button>
 </div>
 
@@ -709,6 +648,10 @@
           <input type="tel" id="f-telefon" name="telefon" required>
         </div>
         <div class="field">
+          <label for="f-email">E-mail</label>
+          <input type="email" id="f-email" name="email" required>
+        </div>
+        <div class="field">
           <label for="f-meret">Felniméret</label>
           <input type="text" id="f-meret" name="meret" placeholder="pl. 17 coll">
         </div>
@@ -724,13 +667,15 @@
         </div>
         <div class="checkbox-row">
           <input type="checkbox" id="f-gdpr" required>
-          <label for="f-gdpr">Hozzájárulok, hogy a megadott adataimat és a feltöltött képeket az árajánlat elkészítéséhez felhasználják.</label>
+          <label for="f-gdpr">Hozzájárulok, hogy a megadott adataimat és a feltöltött képeket az árajánlat elkészítéséhez felhasználják, az <a href="adatkezeles.html" target="_blank" rel="noopener">adatkezelési tájékoztatóban</a> foglaltak szerint.</label>
         </div>
         <div class="form-error" id="photo-form-error" style="display:none;"></div>
         <button type="submit" class="btn btn-primary" id="photo-form-submit">Elküldöm</button>
       </form>
       <div class="dialog-note" id="photo-dialog-note">
         A beküldés után saját, egyedi linket kapsz, ahol nyomon követheted az ajánlatod állapotát.
+        Szakmai kérdés esetén írhatsz közvetlenül is: <a href="mailto:sosfelnijavitas@gmail.com">sosfelnijavitas@gmail.com</a>
+        — írásban egyértelműen visszakereshető, milyen állapotú felniről volt szó, és milyen árat vagy tájékoztatást kaptál.
       </div>
     </div>
 
@@ -738,104 +683,130 @@
   </div>
 </dialog>
 
-<!-- KALKULÁTOR DIALOG: egy görgethető nézet, nincs "következő lépés" kattintgatás -->
-<dialog id="kalkulator-dialog">
-  <div class="kalk-inner">
-    <button class="dialog-close" aria-label="Bezárás" onclick="document.getElementById('kalkulator-dialog').close()">×</button>
-    <div id="kalk-form-wrap">
-    <h2>Gyors becslés — kb. 30 másodperc</h2>
-    <p class="kalk-sub">Válaszd ki lent az adataidat, az összeg azonnal frissül. A végleges ár mindig a személyes állapotfelmérés után derül ki.</p>
+<dialog id="dlg-gorgozes">
+  <div class="dialog-inner" style="position:relative;">
+    <button class="dialog-close" aria-label="Bezárás" onclick="document.getElementById('dlg-gorgozes').close()">×</button>
+    <h2>Görgőzés / mechanikai javítás</h2>
+    <div class="photo-slot" style="aspect-ratio:16/9;margin-bottom:14px;">
+      <img src="foto-02.jpg" alt="Görgőzés, a keréknél dolgozó szerelő" loading="lazy">
+    </div>
+    <div class="acc-panel" style="padding:0;">
+      <table>
+        <tr><td>Alufelni, 13–15"</td><td>4 000 Ft-tól/db + szerelés</td></tr>
+        <tr><td>Méret szerint, 22–26"-ig</td><td>14 000 Ft-tól/db</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px;">
+        Megvárható, kb. 1 óra alatt kész. A fő szolgáltatás a deformáció megszüntetése / görgőzés — a hegesztés
+        nem automatikus rész, csak állapotfelmérés alapján, külön egyeztetve végezzük el. Megfelelően elvégzett
+        javítás után a felni biztonságosan használható közúti forgalomban.
+      </p>
+    </div>
+    <button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="document.getElementById('dlg-gorgozes').close();document.getElementById('photo-dialog').showModal();">Fotó alapján pontos árajánlat</button>
+  </div>
+</dialog>
 
-    <div class="kalk-field">
-      <label class="kalk-label">Hány felnit szeretnél megjavíttatni?</label>
-      <div class="seg" id="kalk-db" role="group">
-        <button type="button" data-val="1">1</button>
-        <button type="button" data-val="2">2</button>
-        <button type="button" data-val="3">3</button>
-        <button type="button" data-val="4" class="active">4</button>
-      </div>
+<dialog id="dlg-spot">
+  <div class="dialog-inner" style="position:relative;">
+    <button class="dialog-close" aria-label="Bezárás" onclick="document.getElementById('dlg-spot').close()">×</button>
+    <h2>Gyors spotjavítás</h2>
+    <div class="photo-slot photo-clean dlg-img">
+      <img src="foto-03.jpg" alt="Felújított felni a javítás után" loading="lazy">
     </div>
+    <div class="acc-panel" style="padding:0;">
+      <table>
+        <tr><td>Spotjavítás (padkasérülés legfeljebb 50%-áig)</td><td>12 000 Ft/db</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px;">
+        A spotjavítás díja a felni peremének legfeljebb 50%-át érintő sérülésekre vonatkozik. Amennyiben a
+        sérülés a felniperem több mint 50%-ára, illetve a teljes kerületére kiterjed (pl. körbepadkázott felni),
+        a javítás 2× spotjavításnak minősül. Megvárható, időponthoz kötött — nem gyári minőségű, gyors megoldás.
+      </p>
+    </div>
+    <button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="document.getElementById('dlg-spot').close();document.getElementById('photo-dialog').showModal();">Fotó alapján pontos árajánlat</button>
+  </div>
+</dialog>
 
-    <div class="kalk-field">
-      <label class="kalk-label">Felniméret</label>
-      <select class="kalk-select" id="kalk-meret">
-        <option value="15">15" vagy kisebb</option>
-        <option value="16">16"</option>
-        <option value="17" selected>17"</option>
-        <option value="18">18"</option>
-        <option value="19">19"</option>
-        <option value="20">20"</option>
-        <option value="2122">21"–22"</option>
-        <option value="2324">23"–24"</option>
-      </select>
+<dialog id="dlg-komplett">
+  <div class="dialog-inner" style="position:relative;">
+    <button class="dialog-close" aria-label="Bezárás" onclick="document.getElementById('dlg-komplett').close()">×</button>
+    <h2>Teljes felújítás</h2>
+    <div class="photo-slot photo-clean dlg-img">
+      <img src="foto-04.jpg" alt="Fényezett, porfestett fekete felni" loading="lazy">
     </div>
+    <div class="acc-panel" style="padding:0;">
+      <table>
+        <tr><td>Teljes felújítás porfestéssel</td><td>20 000 Ft-tól/db</td></tr>
+        <tr><td>Teljes felújítás fényezéssel</td><td>40 000 Ft-tól/db</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px;">
+        Mindkét ajánlat ugyanazt a munkafolyamatot tartalmazza: vegymaratás, üveggyöngyszórás, anyagfeltöltés
+        (alap sérüléseknél), alapozás, majd minőségi porfestés vagy fényezés, végül lakkozás.<br><br>
+        <strong>Porfestés</strong>: a színválaszték a RAL-skálára korlátozódik.<br>
+        <strong>Fényezés</strong>: a színválaszték nem korlátozódik a RAL-skálára — ha egyszerűen más színt
+        szeretnél a felnidre, ez (nem a CNC) a megoldás, és ez adja a legpontosabb gyári színárnyalat-visszaadást
+        is.<br><br>
+        A fényezés nem minden esetben „jobb" — pl. fekete, grafit vagy más, porfestéssel jól reprodukálható
+        színnél nem feltétlenül indokolt a drágább technológia. Egy darab felni esztétikai javításánál vagy
+        teljes felújításánál viszont jellemzően a fényezést javasoljuk, mert ezzel közelíthető meg
+        legpontosabban a gyári színárnyalat.<br><br>
+        <strong>Vállalási idő</strong>: átlagosan 5–15 munkanap, attól függően, mikor kapjuk meg a felniket.
+        A vállalási idő tájékoztató jellegű. Nyitvatartási időben bármikor hozható.<br><br>
+        Teljesen egyedi, showroom-minőségű kivitelt is vállalunk — ennek ára mindig állapotfelmérés után,
+        egyedileg alakul.
+      </p>
+    </div>
+    <button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="document.getElementById('dlg-komplett').close();document.getElementById('photo-dialog').showModal();">Fotó alapján pontos árajánlat</button>
+  </div>
+</dialog>
 
-    <div class="kalk-field">
-      <label class="kalk-label">Milyen munka kell?</label>
-      <div class="choice-list" id="kalk-javitas">
-        <button type="button" class="choice-item" data-val="gorgozes" data-price="4000" data-tol="1">
-          <div><div class="t">Görgőzés</div><div class="p">Ütött, ovális felni</div></div>
-          <div class="price">4 000 Ft-tól</div>
-        </button>
-        <button type="button" class="choice-item" data-val="spot" data-price="12000" data-tol="0">
-          <div><div class="t">Gyors spotjavítás</div><div class="p">Padkás, karcos felület</div></div>
-          <div class="price">12 000 Ft</div>
-        </button>
-        <button type="button" class="choice-item active" data-val="komplett" data-price="20000" data-tol="1">
-          <div><div class="t">Komplett felújítás</div><div class="p">Gyári hatás — legnépszerűbb</div></div>
-          <div class="price">20 000 Ft-tól</div>
-        </button>
-        <button type="button" class="choice-item" data-val="cnc" data-price="15000" data-tol="1">
-          <div><div class="t">CNC / diamond-cut</div><div class="p">Színcsere, esztergált felület</div></div>
-          <div class="price">15 000 Ft-tól</div>
-        </button>
-        <button type="button" class="choice-item" data-val="egyedi" data-price="0" data-tol="2">
-          <div><div class="t">Egyedi szín / showroom</div><div class="p">Egyeztetés szerint</div></div>
-          <div class="price">Egyedi ár</div>
-        </button>
-      </div>
+<dialog id="dlg-cnc">
+  <div class="dialog-inner" style="position:relative;">
+    <button class="dialog-close" aria-label="Bezárás" onclick="document.getElementById('dlg-cnc').close()">×</button>
+    <h2>CNC / Diamond Cut</h2>
+    <div class="photo-slot photo-clean dlg-img">
+      <img src="foto-01.jpg" alt="CNC-megmunkált, gyémántvágott felni" loading="lazy">
     </div>
+    <div class="acc-panel" style="padding:0;">
+      <table>
+        <tr><td>CNC-megmunkálás (mart felület)</td><td>15 000 Ft-tól/db</td></tr>
+        <tr><td>Lakkozás porfestés vagy fényezés után</td><td>15 000 Ft-tól/db</td></tr>
+        <tr><td>Lakkozás, 20" felett</td><td>20 000 Ft-tól/db</td></tr>
+        <tr><td>Matt / magasfényű lakk</td><td>felár nélkül</td></tr>
+        <tr><td>Színezett lakk</td><td>+5 000 Ft/db</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px;">
+        Nem kell automatikusan teljesen felújítani egy bicolor / CNC-mart felnit, ha kizárólag a CNC-mart
+        felület sérült — ilyenkor csak azt a részt munkáljuk meg újra, majd lakkozzuk (ez a <em>részleges, gyári
+        technológiás javítás</em>). Például egy 18"-os felninél: ha teljes felújítást kérsz CNC-vel, az ár
+        25 000 Ft-tól (teljes felújítás) + 15 000 Ft (CNC) — ha viszont a felni egyébként jó állapotú, és csak a
+        CNC-mart felületet kell javítani, a CNC (15 000 Ft-tól) + a szükséges lakkozás (15 000 Ft-tól) adja ki
+        az árat, összesen kb. 30 000 Ft-tól. A CNC után a felületet nem hagyjuk „nyersen" — a lakkozás erősen
+        ajánlott. Gyári technológiával végzett javítás.<br><br>
+        Csak más színt szeretnél a felnidre, és nem a CNC-mart felület sérült? Az a <a href="#" onclick="event.preventDefault();document.getElementById('dlg-cnc').close();document.getElementById('dlg-komplett').showModal();" style="color:var(--text-dark);font-weight:700;">Teljes felújítás</a> szolgáltatásunk, nem a CNC.
+      </p>
+    </div>
+    <button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="document.getElementById('dlg-cnc').close();document.getElementById('photo-dialog').showModal();">Fotó alapján pontos árajánlat</button>
+  </div>
+</dialog>
 
-    <div class="kalk-field">
-      <div class="toggle-row">
-        <label class="kalk-label" for="kalk-gumi-toggle" style="margin-bottom:0;">Kérsz gumiszerelést is a javítás után?</label>
-        <label class="switch">
-          <input type="checkbox" id="kalk-gumi-toggle">
-          <span class="track"></span>
-        </label>
-      </div>
+<dialog id="dlg-sos">
+  <div class="dialog-inner" style="position:relative;">
+    <button class="dialog-close" aria-label="Bezárás" onclick="document.getElementById('dlg-sos').close()">×</button>
+    <h2>Gyorsabban lenne rá szükséged?</h2>
+    <div class="acc-panel" style="padding:0;">
+      <table>
+        <tr><td>Alap vállalási idő</td><td>átlagosan 5–15 munkanap</td></tr>
+        <tr><td>Fix 5 munkanapos vállalás</td><td>+30% felár</td></tr>
+        <tr><td>SOS, 1 munkanapos vállalás</td><td>+50% felár</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px;">
+        Az alap vállalási idő a részleges vagy teljes, gyári technológiás felújításra vonatkozik — a megvárható
+        munkák (pl. görgőzés, spotjavítás) ettől függetlenül, helyben elkészülnek. A SOS, 1 munkanapos vállalás
+        kizárólag előzetes egyeztetés alapján, az adott munka és az aktuális kapacitás függvényében vehető
+        igénybe — nem automatikus.
+      </p>
     </div>
-
-    <div class="kalk-field" id="kalk-szelep-field" style="display:none;">
-      <label class="kalk-label">Szelep típusa</label>
-      <div class="seg" id="kalk-szelep">
-        <button type="button" data-val="500" class="active">Gumiszelep</button>
-        <button type="button" data-val="1500">Fémszelep</button>
-      </div>
-      <div style="font-size:11px;color:var(--text-muted);margin-top:8px;">
-        Ezüst/fekete eloxált/színes fémszelep és TPMS-szelep helyszínen is választható.
-      </div>
-    </div>
-
-    <div class="kalk-field">
-      <label class="kalk-label">Elérhetőséged (hogy tudjunk válaszolni az ajánlattal)</label>
-      <div style="display:flex;gap:8px;">
-        <input type="text" id="kalk-nev" placeholder="Név" style="flex:1;min-height:44px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:0 12px;font-family:var(--font);font-size:14px;color:var(--text-dark);">
-        <input type="tel" id="kalk-telefon" placeholder="Telefonszám" style="flex:1;min-height:44px;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:0 12px;font-family:var(--font);font-size:14px;color:var(--text-dark);">
-      </div>
-    </div>
-
-    <div class="kalk-total">
-      <div class="row"><span class="lbl">Becsült összeg</span><span class="sum" id="kalk-sum">80 000 Ft-tól</span></div>
-      <div class="note" id="kalk-note">4 db komplett felújítás alapján, gumiszerelés nélkül.</div>
-      <div class="form-error" id="kalk-form-error" style="display:none;"></div>
-      <div class="btn-row">
-        <button type="button" class="btn btn-primary" id="kalk-cta">Ajánlatot kérek</button>
-        <button type="button" class="btn btn-ghost-light" onclick="window.print()">Mentés / nyomtatás</button>
-      </div>
-    </div>
-    </div>
-    <div id="kalk-confirm-wrap" style="display:none;padding:20px 0 22px;"></div>
+    <button type="button" class="btn btn-primary" style="margin-top:16px;" onclick="document.getElementById('dlg-sos').close();document.getElementById('photo-dialog').showModal();">Fotó alapján pontos árajánlat</button>
   </div>
 </dialog>
 
@@ -845,166 +816,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="supabase-config.js"></script>
 <script src="db.js"></script>
-
-<script>
-  // Kalkulátor: egy görgethető nézet, élőben frissülő összesítővel — a régi
-  // 6 lépéses varázsló helyett, hogy a lehető legkevesebb kattintással el lehessen
-  // jutni egy becsléshez (Barni 2026-09-26-i pontosítása a termékfilozófiához).
-  (function () {
-    var GUMISZERELES = { // valós árlista (centrumgumi.hu/szolgaltatasaink-arlista), alufelni sorok
-      "15": 5100, "16": 5500, "17": 6100, "18": 6600,
-      "19": 7300, "20": 7800, "2122": 8600, "2324": 9500
-    };
-    var state = { db: 4, meret: "17", javitas: "komplett", javitasAr: 20000, javitasTol: 1, gumi: false, szelep: 500 };
-
-    function fmt(n) { return n.toLocaleString('hu-HU') + ' Ft'; }
-
-    function setActive(container, target) {
-      container.querySelectorAll('button, .choice-item').forEach(function (b) { b.classList.remove('active'); });
-      target.classList.add('active');
-    }
-
-    document.getElementById('kalk-db').addEventListener('click', function (e) {
-      var btn = e.target.closest('button'); if (!btn) return;
-      state.db = parseInt(btn.dataset.val, 10);
-      setActive(this, btn);
-      recalc();
-    });
-
-    document.getElementById('kalk-meret').addEventListener('change', function () {
-      state.meret = this.value;
-      recalc();
-    });
-
-    document.getElementById('kalk-javitas').addEventListener('click', function (e) {
-      var btn = e.target.closest('.choice-item'); if (!btn) return;
-      state.javitas = btn.dataset.val;
-      state.javitasAr = parseInt(btn.dataset.price, 10);
-      state.javitasTol = btn.dataset.tol; // "0" pontos ár, "1" -tól, "2" egyedi
-      setActive(this, btn);
-      recalc();
-    });
-
-    var gumiToggle = document.getElementById('kalk-gumi-toggle');
-    var szelepField = document.getElementById('kalk-szelep-field');
-    gumiToggle.addEventListener('change', function () {
-      state.gumi = this.checked;
-      szelepField.style.display = this.checked ? 'block' : 'none';
-      recalc();
-    });
-
-    document.getElementById('kalk-szelep').addEventListener('click', function (e) {
-      var btn = e.target.closest('button'); if (!btn) return;
-      state.szelep = parseInt(btn.dataset.val, 10);
-      setActive(this, btn);
-      recalc();
-    });
-
-    function recalc() {
-      if (state.javitasTol === "2") {
-        // Egyedi szín / showroom: nincs kiszámolható ár
-        document.getElementById('kalk-sum').textContent = 'Egyedi ár';
-        document.getElementById('kalk-note').textContent = 'Ehhez a munkához egyedi árajánlatot adunk, állapotfelmérés után.';
-        return;
-      }
-      var reszletek = [];
-      var osszeg = state.db * state.javitasAr;
-      reszletek.push(state.db + ' db javítás');
-      if (state.db < 4) {
-        var felar = state.db * 5000;
-        osszeg += felar;
-        reszletek.push('4-nél kevesebb felni felár');
-      }
-      if (state.gumi) {
-        var gumiAr = GUMISZERELES[state.meret] || 0;
-        osszeg += state.db * gumiAr;
-        osszeg += state.db * state.szelep;
-        reszletek.push('gumiszerelés + szelep');
-      }
-      var elotag = state.javitasTol === "1" ? '-tól' : '';
-      document.getElementById('kalk-sum').textContent = fmt(osszeg) + elotag;
-      document.getElementById('kalk-note').textContent = reszletek.join(', ') + ' alapján.';
-    }
-
-    function kalkMailtoFallback() {
-      var javitasNev = document.querySelector('#kalk-javitas .choice-item.active .t').textContent;
-      var osszeg = document.getElementById('kalk-sum').textContent;
-      var nev = document.getElementById('kalk-nev').value;
-      var telefon = document.getElementById('kalk-telefon').value;
-      var subject = encodeURIComponent('Kalkulátoros ajánlatkérés – felnijavítás');
-      var body = encodeURIComponent(
-        'Név: ' + nev + '\n' +
-        'Telefon: ' + telefon + '\n' +
-        'Darabszám: ' + state.db + '\n' +
-        'Felniméret: ' + document.getElementById('kalk-meret').selectedOptions[0].textContent + '\n' +
-        'Munka: ' + javitasNev + '\n' +
-        'Gumiszerelés: ' + (state.gumi ? 'igen' : 'nem') + '\n' +
-        'Becsült összeg: ' + osszeg + '\n\n' +
-        '(Ez egy előzetes, kalkulátoros becslés — a végleges ár állapotfelmérés után derül ki.)'
-      );
-      window.location.href = 'mailto:sosfelnijavitas@gmail.com?subject=' + subject + '&body=' + body;
-    }
-
-    function showKalkConfirm(record) {
-      var link = window.location.href.replace(/[^/]*$/, '') + 'ugyfel-nezet.html?token=' + record.share_token;
-      var wrap = document.getElementById('kalk-confirm-wrap');
-      wrap.innerHTML =
-        '<div class="confirm-panel">' +
-          '<div class="ico">✓</div>' +
-          '<h3>Megvan az ajánlatkérésed!</h3>' +
-          '<p>Hamarosan felvesszük veled a kapcsolatot. Az alábbi linken bármikor megnézheted az állapotát:</p>' +
-          '<div class="link-box">' + link + '</div>' +
-          '<a class="btn btn-primary" href="' + link + '">Megnyitom a saját nézetem</a>' +
-          '<button type="button" class="btn btn-ghost-light" style="margin-top:8px;" onclick="document.getElementById(\'kalkulator-dialog\').close()">Bezárás</button>' +
-        '</div>';
-      document.getElementById('kalk-form-wrap').style.display = 'none';
-      wrap.style.display = 'block';
-    }
-
-    document.getElementById('kalk-cta').addEventListener('click', function () {
-      var errBox = document.getElementById('kalk-form-error');
-      var nev = document.getElementById('kalk-nev').value.trim();
-      var telefon = document.getElementById('kalk-telefon').value.trim();
-      if (!nev || !telefon) {
-        errBox.textContent = 'Add meg a neved és a telefonszámod, hogy vissza tudjunk jelezni.';
-        errBox.style.display = 'block';
-        return;
-      }
-      errBox.style.display = 'none';
-
-      var btn = this;
-      btn.disabled = true;
-      btn.textContent = 'Küldés...';
-
-      var javitasNev = document.querySelector('#kalk-javitas .choice-item.active .t').textContent;
-      var osszeg = document.getElementById('kalk-sum').textContent;
-
-      Leads.create({
-        forras: 'kalkulator',
-        nev: nev,
-        telefon: telefon,
-        felni_meret: document.getElementById('kalk-meret').selectedOptions[0].textContent,
-        darabszam: state.db,
-        munka_tipus: state.javitas,
-        gumiszereles: state.gumi,
-        szelep_tipus: state.gumi ? (state.szelep === 500 ? 'gumiszelep' : 'femszelep') : null,
-        becsult_osszeg_szoveg: osszeg,
-        becsult_osszeg_min: state.javitasTol === '2' ? null : state.db * state.javitasAr
-      }).then(function (res) {
-        btn.disabled = false;
-        btn.textContent = 'Ajánlatot kérek';
-        if (res.error) {
-          console.warn('[SOS Felnijavítás] Lead mentése sikertelen, e-mail fallback:', res.error);
-          kalkMailtoFallback();
-          return;
-        }
-        showKalkConfirm(res.data);
-      });
-    });
-
-    recalc();
-  })();
-</script>
 
 <script>
   // Fotóküldés form -> Supabase leadbe mentés (fotókkal együtt), e-mail csak
@@ -1043,12 +854,13 @@
       var errBox = document.getElementById('photo-form-error');
       var nev = document.getElementById('f-nev').value.trim();
       var telefon = document.getElementById('f-telefon').value.trim();
+      var email = document.getElementById('f-email').value.trim();
       var meret = document.getElementById('f-meret').value.trim();
       var db = document.getElementById('f-db').value;
       var fileInput = document.getElementById('f-kepek');
 
-      if (!nev || !telefon || !document.getElementById('f-gdpr').checked) {
-        errBox.textContent = 'Add meg a neved, a telefonszámod, és fogadd el a hozzájárulást.';
+      if (!nev || !telefon || !email || !document.getElementById('f-gdpr').checked) {
+        errBox.textContent = 'Add meg a neved, a telefonszámod, az e-mail címed, és fogadd el a hozzájárulást.';
         errBox.style.display = 'block';
         return;
       }
@@ -1067,6 +879,7 @@
           forras: 'foto',
           nev: nev,
           telefon: telefon,
+          email: email,
           felni_meret: meret,
           darabszam: (parseInt(db, 10) || null),
           fotok: fotok

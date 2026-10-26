@@ -306,7 +306,7 @@
         '<div class="lead-head" id="head-' + lead.id + '">' +
           '<div>' +
             '<span class="pill pill-src">' + (lead.forras === "kalkulator" ? "Kalkulátor" : "Fotó") + '</span><br>' +
-            '<div class="who">' + esc(lead.nev || "Ismeretlen") + " · " + esc(lead.telefon || "") + '</div>' +
+            '<div class="who">' + esc(lead.nev || "Ismeretlen") + " · " + esc(lead.telefon || "") + (lead.email ? " · " + esc(lead.email) : "") + '</div>' +
             '<div class="meta">' + fmtWhen(lead.created_at) + '</div>' +
             '<div class="sum">' + summaryLine(lead) + '</div>' +
           '</div>' +

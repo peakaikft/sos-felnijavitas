@@ -85,7 +85,7 @@
       id: record.id,
       share_token: shareToken
     });
-    return client.from("leads").insert([insertRow]).then(function (res) {
+    return client.from("sos_felni_leads").insert([insertRow]).then(function (res) {
       if (res.error) return { data: null, error: res.error };
       return { data: record, error: null };
     });
@@ -104,7 +104,7 @@
 
     var uploads = files.map(function (file) {
       var path = shareToken + "/" + Date.now() + "_" + file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-      return client.storage.from("lead-fotok").upload(path, file).then(function (res) {
+      return client.storage.from("sos-felni-fotok").upload(path, file).then(function (res) {
         if (res.error) throw res.error;
         return path;
       });
@@ -119,7 +119,7 @@
     if (isDemo || !path || path.indexOf("demo:") === 0) {
       return Promise.resolve({ data: null, error: null });
     }
-    return client.storage.from("lead-fotok").createSignedUrl(path, 3600).then(function (res) {
+    return client.storage.from("sos-felni-fotok").createSignedUrl(path, 3600).then(function (res) {
       if (res.error) return { data: null, error: res.error };
       return { data: res.data.signedUrl, error: null };
     });
@@ -131,7 +131,7 @@
       var found = readDemoStore().filter(function (l) { return l.share_token === token; })[0];
       return Promise.resolve({ data: found || null, error: found ? null : { message: "Nincs ilyen lead." } });
     }
-    return client.rpc("get_lead_by_token", { p_token: token }).then(function (res) {
+    return client.rpc("get_sos_felni_lead_by_token", { p_token: token }).then(function (res) {
       if (res.error) return { data: null, error: res.error };
       var row = (res.data && res.data[0]) || null;
       return { data: row, error: row ? null : { message: "Nincs ilyen lead." } };
@@ -146,7 +146,7 @@
       });
       return Promise.resolve({ data: list, error: null });
     }
-    return client.from("leads").select("*").order("created_at", { ascending: false }).then(function (res) {
+    return client.from("sos_felni_leads").select("*").order("created_at", { ascending: false }).then(function (res) {
       return { data: res.data, error: res.error };
     });
   }
@@ -160,7 +160,7 @@
       writeDemoStore(list);
       return Promise.resolve({ data: list[idx], error: null });
     }
-    return client.from("leads").update(patch).eq("id", id).select().then(function (res) {
+    return client.from("sos_felni_leads").update(patch).eq("id", id).select().then(function (res) {
       if (res.error) return { data: null, error: res.error };
       return { data: res.data && res.data[0], error: null };
     });
