@@ -71,6 +71,15 @@
     display:flex;align-items:center;justify-content:center;flex-shrink:0;
   }
 
+
+  /* előtte-utána párok (valódi munkák) */
+  .ba-pair{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:20px;}
+  .ba-pair img{width:100%;height:auto;aspect-ratio:700/672;object-fit:cover;display:block;background:#fff;border-radius:8px;}
+  .ba-grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:22px;}
+  .ba-grid .ba-pair{margin-top:0;}
+  .ba-grid .ba-pair img{box-shadow:0 0 0 1px var(--border);}
+  .ba-note{font-size:13px;color:var(--text-muted,#6b6b6b);margin-top:14px;}
+
   /* hero */
   .hero{background:var(--dark);color:#fff;padding:34px 20px 30px;}
   .hero h1{font-size:32px;color:#fff;}
@@ -217,6 +226,8 @@
     .hero{display:grid;grid-template-columns:1.05fr 1fr;column-gap:56px;align-items:center;}
     .hero>.eyebrow,.hero>h1,.hero>p,.hero>.btn-row{grid-column:1;}
     .hero>.photo-slot{grid-column:2;grid-row:1 / span 5;margin-top:0 !important;aspect-ratio:16/10 !important;}
+    .hero>.ba-pair{grid-column:2;grid-row:1 / span 5;margin-top:0;}
+    .ba-grid{grid-template-columns:1fr 1fr;gap:26px;}
     .hero h1{font-size:48px;}
     .hero p{font-size:18px;}
     .btn{width:auto;}
@@ -334,9 +345,38 @@
     <a class="btn btn-ghost-dark" href="#megoldasok">Melyik javítás kell nekem?</a>
   </div>
 
-  <div class="photo-slot hero-ba" style="aspect-ratio:16/10;margin-top:20px;background:#fff;">
-    <img src="elotte-utana.jpg" alt="Előtte: sérült, rozsdás felni. Utána: ugyanaz a felni újra gyári megjelenéssel" loading="eager">
+  <div class="ba-pair hero-pair" role="group" aria-label="Valódi munka: felni a javítás előtt és után">
+    <img src="referencia-5-elotte.jpg" alt="Előtte: sómarta, foltos, korrodált alufelni" width="700" height="672" loading="eager">
+    <img src="referencia-5-utana.jpg" alt="Utána: ugyanaz a felni, felújítva, fényesen" width="700" height="672" loading="eager">
   </div>
+</section>
+
+<!-- 2b. VALÓDI MUNKÁK -->
+<section id="munkak">
+  <div class="sec-head">
+    <div class="eyebrow">Valódi munkák</div>
+    <h2>Ilyen felnik jönnek hozzánk. Ilyenek mennek ki.</h2>
+    <p>Nem stúdiófotó, nem mintakép: ezek ügyfelek tényleges felnijei a javítás előtt és után.</p>
+  </div>
+  <div class="ba-grid">
+    <div class="ba-pair">
+      <img src="referencia-2-elotte.jpg" alt="Előtte: matt, kopott szürke felni" width="700" height="672" loading="lazy">
+      <img src="referencia-2-utana.jpg" alt="Utána: ugyanaz a felni fényes feketére fényezve" width="700" height="672" loading="lazy">
+    </div>
+    <div class="ba-pair">
+      <img src="referencia-3-elotte.jpg" alt="Előtte: szennyezett, oxidált ötküllős felni" width="700" height="672" loading="lazy">
+      <img src="referencia-3-utana.jpg" alt="Utána: ugyanaz a felni, egységes sötétszürke felülettel" width="700" height="672" loading="lazy">
+    </div>
+    <div class="ba-pair">
+      <img src="referencia-4-elotte.jpg" alt="Előtte: padkasérült, kopott többküllős felni" width="700" height="672" loading="lazy">
+      <img src="referencia-4-utana.jpg" alt="Utána: ugyanaz a felni, hibátlan felülettel" width="700" height="672" loading="lazy">
+    </div>
+    <div class="ba-pair">
+      <img src="referencia-1-elotte.jpg" alt="Előtte: sérült, karcos kétszínű felni" width="700" height="672" loading="lazy">
+      <img src="referencia-1-utana.jpg" alt="Utána: ugyanaz a kétszínű felni, újra gyári megjelenéssel" width="700" height="672" loading="lazy">
+    </div>
+  </div>
+  <button class="btn btn-primary" style="margin-top:22px;" onclick="document.getElementById('photo-dialog').showModal()">Küldöm a saját felnim fotóját</button>
 </section>
 
 <!-- 3. MELYIK HELYZET ISMERŐS -->
