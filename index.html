@@ -82,6 +82,19 @@
   .photo-guide img{width:96px;height:auto;border-radius:6px;flex-shrink:0;background:#fff;}
   .photo-guide ul{margin:4px 0 6px;padding-left:16px;}
   .photo-guide .pg-no{color:var(--text-muted,#6b6b6b);}
+  .howto{border:2px solid var(--accent);border-radius:12px;padding:14px;background:#fff;}
+  .howto h3{margin:0 0 4px;font-size:16px;}
+  .howto .lead{font-size:13px;margin:0 0 10px;}
+  .howto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .howto figure{margin:0;}
+  .howto figure img{width:100%;height:auto;aspect-ratio:5/4;object-fit:cover;border-radius:8px;display:block;border:3px solid #2e9e5b;box-sizing:border-box;}
+  .howto figure.bad img{border-color:var(--accent);}
+  .howto figcaption{font-size:11.5px;line-height:1.35;margin-top:5px;}
+  .howto figcaption b{display:block;font-size:12px;}
+  .howto figure.good b{color:#2e9e5b;} .howto figure.bad b{color:var(--accent);}
+  .howto ul{margin:10px 0 0;padding-left:18px;font-size:13px;}
+  #fotozas{background:var(--light);}
+  #fotozas .howto{max-width:760px;}
   .ba-note{font-size:13px;color:var(--text-muted,#6b6b6b);margin-top:14px;}
 
   /* hero */
@@ -348,6 +361,7 @@
     <a class="btn btn-ghost-dark" href="#idopont">Időpontot foglalok</a>
     <a class="btn btn-ghost-dark" href="#megoldasok">Melyik javítás kell nekem?</a>
   </div>
+  <p style="font-size:12.5px;margin:2px 0 0;">Fotót küldesz? <a href="#fotozas" style="color:#fff;font-weight:700;">Így fotózz: 1 jó kép elég →</a></p>
 
   <div class="ba-pair hero-pair" role="group" aria-label="Valódi munka: felni a javítás előtt és után">
     <img src="referencia-1-elotte.jpg" alt="Előtte: sérült, karcos kétszínű alufelni" width="700" height="634" loading="eager">
@@ -453,8 +467,8 @@
     <div class="price-card highlight" id="arak-komplett">
       <div class="badge">Legnépszerűbb</div>
       <h3>Teljes felújítás</h3>
-      <div class="price">20 000 Ft-tól/db</div>
-      <div style="font-size:12px;color:var(--text-on-dark-muted);margin-top:-6px;">porfestéssel · fényezéssel 40 000 Ft-tól/db</div>
+      <div class="price">20 000 Ft/db</div>
+      <div style="font-size:12px;color:var(--text-on-dark-muted);margin-top:-6px;">porfestéssel · fényezéssel 40 000 Ft/db</div>
       <p style="font-size:12.5px;color:var(--text-on-dark-muted);margin:0;">Gyári technológiával — tetszőleges színben is, fényezéssel.</p>
       <button type="button" class="btn btn-ghost-dark" style="margin-top:2px;background:rgba(255,255,255,.08);" onclick="document.getElementById('dlg-komplett').showModal()">Részletes árlista →</button>
     </div>
@@ -599,7 +613,7 @@
     </details>
     <details class="acc-item">
       <summary class="acc-trigger">Hogyan fotózzam le helyesen a felnit?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#14181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
-      <div class="acc-panel">Egy jó fotó elég az előzetes becsléshez: az egész felni jól látható, természetes fényben, élesen, szemből. Ha van, egy közelkép a sérülésről is segít (legfeljebb 3 fotót kérünk). Egy jó fotó többet ér, mint sok rossz.</div>
+      <div class="acc-panel">Egy jó fotó elég az előzetes becsléshez: az egész felni jól látható, természetes fényben, élesen, szemből. Ha van, egy közelkép a sérülésről is segít (legfeljebb 3 fotót kérünk). Egy jó fotó többet ér, mint sok rossz. <a href="#fotozas" style="color:var(--accent);font-weight:700;">Minta a jó és a rossz fotóra</a>.</div>
     </details>
   </div>
 </section>
@@ -629,6 +643,28 @@
     </div>
   </div>
   <p style="font-size:12.5px;margin-top:14px;">Nem tudod, melyik kell? Küldj fotót, és megmondjuk — <a href="#" onclick="event.preventDefault();document.getElementById('photo-dialog').showModal();">Fotó alapján árajánlat</a>.</p>
+</section>
+
+<!-- 9c. FOTÓ-ÚTMUTATÓ -->
+<section id="fotozas">
+  <div class="sec-head">
+    <div class="eyebrow">Fotó-útmutató</div>
+    <h2>Mielőtt fotót küldesz</h2>
+  </div>
+  <div class="howto" id="howto-page">
+  <h3>Így fotózz: 1 jó fotó elég</h3>
+  <p class="lead">Egy éles, jól látható kép többet ér, mint 30 rossz. Ennek alapján tudunk pontos árat adni.</p>
+  <div class="howto-grid">
+    <figure class="good"><img src="minta-jo.jpg" alt="Jó fotó: az egész felni élesen, jó fényben" loading="lazy"><figcaption><b>✓ Így jó</b>Az egész felni látszik, szemből, élesen, természetes fényben.</figcaption></figure>
+    <figure class="bad"><img src="minta-rossz-sotet.jpg" alt="Rossz fotó: sötét és elmosódott" loading="lazy"><figcaption><b>✗ Ne így</b>Sötét vagy elmosódott kép.</figcaption></figure>
+    <figure class="bad"><img src="minta-rossz-kozeli.jpg" alt="Rossz fotó: csak apró részlet látszik" loading="lazy"><figcaption><b>✗ Ne így</b>Csak egy apró részlet, a teljes felni nélkül.</figcaption></figure>
+  </div>
+  <ul>
+    <li>Kb. 1–2 méterről, a felni elé állva, szemből.</li>
+    <li>Ha van, egy második, közeli kép a sérülésről is jó (legfeljebb 3 fotót kérünk).</li>
+  </ul>
+</div>
+  <button class="btn btn-primary" style="margin-top:18px;" onclick="document.getElementById('photo-dialog').showModal()">Fotó küldése</button>
 </section>
 
 <!-- 10. ZÁRÓ CTA -->
@@ -692,7 +728,20 @@
       <h2>Küldd el a felnit — mi visszajelzünk</h2>
       <p style="font-size:13px;">Fotó alapján esztétikai sérülésre (karc, padka, korrózió, színcsere) adunk árajánlatot. Ütött, ovális felnihez inkább <a href="#idopont" onclick="document.getElementById('photo-dialog').close()">foglalj időpontot</a>.</p>
 
-      <form id="photo-form">
+      <div class="howto" id="howto-dialog">
+  <h3>Így fotózz: 1 jó fotó elég</h3>
+  <p class="lead">Egy éles, jól látható kép többet ér, mint 30 rossz. Ennek alapján tudunk pontos árat adni.</p>
+  <div class="howto-grid">
+    <figure class="good"><img src="minta-jo.jpg" alt="Jó fotó: az egész felni élesen, jó fényben" loading="lazy"><figcaption><b>✓ Így jó</b>Az egész felni látszik, szemből, élesen, természetes fényben.</figcaption></figure>
+    <figure class="bad"><img src="minta-rossz-sotet.jpg" alt="Rossz fotó: sötét és elmosódott" loading="lazy"><figcaption><b>✗ Ne így</b>Sötét vagy elmosódott kép.</figcaption></figure>
+    <figure class="bad"><img src="minta-rossz-kozeli.jpg" alt="Rossz fotó: csak apró részlet látszik" loading="lazy"><figcaption><b>✗ Ne így</b>Csak egy apró részlet, a teljes felni nélkül.</figcaption></figure>
+  </div>
+  <ul>
+    <li>Kb. 1–2 méterről, a felni elé állva, szemből.</li>
+    <li>Ha van, egy második, közeli kép a sérülésről is jó (legfeljebb 3 fotót kérünk).</li>
+  </ul>
+</div>
+      <form id="photo-form" style="margin-top:14px;">
         <div class="field">
           <label for="f-nev">Név</label>
           <input type="text" id="f-nev" name="nev" required>
@@ -716,19 +765,8 @@
           </select>
         </div>
         <div class="field">
-          <label for="f-kepek">Fotó (elég 1 db, legfeljebb 3)</label>
-          <div class="photo-guide">
-            <img src="minta-fotozas.jpg" alt="Minta: jó felnifotó, az egész felni élesen, jó fényben" width="400" height="324" loading="lazy">
-            <div>
-              <strong>Így fotózz:</strong>
-              <ul>
-                <li>az egész felni látszódjon, kb. 1–2 méterről, szemből</li>
-                <li>természetes, egyenletes fényben, éles képpel</li>
-                <li>ha van, egy közelkép a sérülésről is jó</li>
-              </ul>
-              <span class="pg-no">Kerüld: sötét, elmosódott vagy csak apró részletet mutató képet. Egy jó fotó többet ér, mint sok rossz.</span>
-            </div>
-          </div>
+          <label for="f-kepek">Fotó feltöltése (elég 1 db, legfeljebb 3)</label>
+          
           <input type="file" id="f-kepek" name="kepek" accept="image/*" multiple>
         </div>
         <div class="checkbox-row">
@@ -801,8 +839,8 @@
     </div>
     <div class="acc-panel" style="padding:0;">
       <table>
-        <tr><td>Teljes felújítás porfestéssel</td><td>20 000 Ft-tól/db</td></tr>
-        <tr><td>Teljes felújítás fényezéssel</td><td>40 000 Ft-tól/db</td></tr>
+        <tr><td>Teljes felújítás porfestéssel</td><td>20 000 Ft/db</td></tr>
+        <tr><td>Teljes felújítás fényezéssel</td><td>40 000 Ft/db</td></tr>
       </table>
       <p style="margin-top:12px;font-size:13px;">
         Mindkét ajánlat ugyanazt a munkafolyamatot tartalmazza: vegymaratás, üveggyöngyszórás, anyagfeltöltés
@@ -842,7 +880,7 @@
         Nem kell automatikusan teljesen felújítani egy bicolor / CNC-mart felnit, ha kizárólag a CNC-mart
         felület sérült — ilyenkor csak azt a részt munkáljuk meg újra, majd lakkozzuk (ez a <em>részleges, gyári
         technológiás javítás</em>). Például egy 18"-os felninél: ha teljes felújítást kérsz CNC-vel, az ár
-        25 000 Ft-tól (teljes felújítás) + 15 000 Ft (CNC) — ha viszont a felni egyébként jó állapotú, és csak a
+        25 000 Ft (teljes felújítás) + 15 000 Ft (CNC) — ha viszont a felni egyébként jó állapotú, és csak a
         CNC-mart felületet kell javítani, a CNC (15 000 Ft) + a szükséges lakkozás (15 000 Ft) adja ki
         az árat, összesen 30 000 Ft. A CNC után a felületet nem hagyjuk „nyersen" — a lakkozás erősen
         ajánlott. Gyári technológiával végzett javítás.<br><br>
